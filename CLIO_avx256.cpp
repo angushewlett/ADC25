@@ -28,8 +28,11 @@ using namespace std;
 //////////////////////////////
 // 
 // Absolute bare-bones SIMD wrapper providing a few essential operations.
-// This implementation is for AVX2/256, if you can't translate this to NEON or AVX512 in half an hour, what are you doing here?
-// 
+//
+// This implementation is for AVX2/256, if you can't translate this to NEON or AVX512 in half an hour, what are you even doing here?
+//
+// Full implementation available on request, this is enough to run this demo.
+//
 //////////////////////////////
 class simd
 {
@@ -168,13 +171,11 @@ class simd
         inverse = (inverse + inverse - muls);
         return inverse * a;
     }       
-
 };
 
 
 class Oscillator
 {
-
     public:
         using vf = simd::vf;
         vf m_phs = 0.f;
@@ -233,7 +234,6 @@ __m256 TickOsc8(Oscillator& a, Oscillator& b, Oscillator& c, Oscillator& d,Oscil
 }
 
 
-
 double measureEffectiveFrequencyMhz(std::chrono::milliseconds dur = std::chrono::milliseconds(50))
 {
     ULONGLONG startCycles = 0, endCycles = 0;
@@ -248,13 +248,12 @@ double measureEffectiveFrequencyMhz(std::chrono::milliseconds dur = std::chrono:
 }
 
 
-void cpuid() {
-    unsigned int level = 0;
+void cpuid() 
+{
     unsigned int eax, ebx, ecx, edx;
-
     string mModelName;
-
-    for(int i=0x80000002; i<0x80000005; ++i) {
+    for(int i=0x80000002; i<0x80000005; ++i) 
+	{
         __get_cpuid(i, &eax, &ebx, &ecx, &edx);
         mModelName += string((const char*)&eax, 4);
         mModelName += string((const char*)&ebx, 4);
@@ -305,5 +304,5 @@ int main()
     // This is just to create a dependency so the compiler can't opt out of doing the actual processing!
     std::cout << "Output of sum of all oscillators @ end of process: " << accum.horizontal_add() << "\n";
     return 0;
-
 }
+
