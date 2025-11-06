@@ -248,24 +248,9 @@ double measureEffectiveFrequencyMhz(std::chrono::milliseconds dur = std::chrono:
 }
 
 
-
-
-struct CPUVendorID {
-    unsigned int ebx;
-    unsigned int edx;
-    unsigned int ecx;
-
-    string toString() const {
-        return string(reinterpret_cast<const char *>(this), 12);
-    }
-};
-
 void cpuid() {
     unsigned int level = 0;
-    unsigned int eax = 0;
-    unsigned int ebx;
-    unsigned int ecx;
-    unsigned int edx;
+    unsigned int eax, ebx, ecx, edx;
 
     string mModelName;
 
@@ -276,8 +261,7 @@ void cpuid() {
         mModelName += string((const char*)&ecx, 4);
         mModelName += string((const char*)&edx, 4);
     }  
-    cout << mModelName << "\n";
-    std::cout << "@ CPU : " << measureEffectiveFrequencyMhz() << " MHz\n";
+    cout << mModelName << " @ " << measureEffectiveFrequencyMhz() << " MHz\n";
 }
 
 
@@ -321,4 +305,5 @@ int main()
     // This is just to create a dependency so the compiler can't opt out of doing the actual processing!
     std::cout << "Output of sum of all oscillators @ end of process: " << accum.horizontal_add() << "\n";
     return 0;
+
 }
