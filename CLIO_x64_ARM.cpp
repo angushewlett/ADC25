@@ -30,7 +30,7 @@
 #endif
 
 // Measurements
-#if WIN32
+#if _WIN32
 #include <intrin.h>
 #include <windows.h>
 #else
@@ -520,7 +520,7 @@ class simd_avx256
 
 };
 
-using simd = simd_avx256;
+using simd = simd_avx512;
 #endif
 
 
@@ -605,7 +605,7 @@ simd::reg_f TickOsc16(Oscillator& a0, Oscillator& b0, Oscillator& c0, Oscillator
     return result.v;
 }
 
-#if WIN32
+#if _WIN32
 unsigned long long GetCycleTime()
 {
     unsigned long long result;
@@ -652,7 +652,7 @@ void cpuid()
         #if __aarch64__ || __ARM64EC__ || __ARM64__ || _M_ARM64
         mModelName = "Generic ARM";
         #else
-        #if WIN32
+        #if _WIN32
         int regs[4]; //eax, ebx, ecx, edx;
         __cpuid(regs, i);
         #else
@@ -694,7 +694,7 @@ int main()
         liCycles[i] = t1 - t0;
     }
     std::sort(liCycles.begin(), liCycles.end());
-    std::cout << simd::voices*2 << " voices; "  << "1 ops x 1000 ticks: " << liCycles[250] << " cycles\n";
+    std::cout << simd::voices*1 << " voices; "  << "1 ops x 1000 ticks: " << liCycles[250] << " cycles\n";
 
     for (int i = 0; i < 1000; i++)
     {
